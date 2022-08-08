@@ -1,7 +1,7 @@
 package hr.ljakovic.cinespring.service;
 
 import hr.ljakovic.cinespring.repo.AppUserRepo;
-import hr.ljakovic.cinespring.repo.FavoritesRepo;
+import hr.ljakovic.cinespring.repo.WatchedRepo;
 import hr.ljakovic.cinespring.util.TmdbApiUtils;
 import info.movito.themoviedbapi.TmdbApi;
 import org.springframework.stereotype.Service;
@@ -11,11 +11,11 @@ public class WatchedService {
 
     private final TmdbApi tmdbApi;
     private final AppUserRepo appUserRepo;
-    private final FavoritesRepo favoritesRepo;
+    private final WatchedRepo watchedRepo;
 
-    public WatchedService(AppUserRepo appUserRepo, FavoritesRepo favoritesRepo) {
+    public WatchedService(AppUserRepo appUserRepo, WatchedRepo watchedRepo) {
         this.tmdbApi = new TmdbApi(TmdbApiUtils.API_KEY);
         this.appUserRepo = appUserRepo;
-        this.favoritesRepo = favoritesRepo;
+        this.watchedRepo = watchedRepo;
     }
 }
