@@ -1,0 +1,84 @@
+package hr.ljakovic.cinespring.service;
+
+import hr.ljakovic.cinespring.dto.FavoriteReq;
+import hr.ljakovic.cinespring.exception.CineSpringException;
+import hr.ljakovic.cinespring.model.AppUser;
+import hr.ljakovic.cinespring.model.Favorite;
+import hr.ljakovic.cinespring.model.FavoriteId;
+import hr.ljakovic.cinespring.repo.FavoritesRepo;
+import hr.ljakovic.cinespring.repo.AppUserRepo;
+import hr.ljakovic.cinespring.util.TmdbApiUtils;
+import info.movito.themoviedbapi.TmdbApi;
+import info.movito.themoviedbapi.model.MovieDb;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class FavoritesService {
+
+    private final TmdbApi tmdbApi;
+    private final AppUserRepo appUserRepo;
+    private final FavoritesRepo favoritesRepo;
+
+    public FavoritesService(AppUserRepo appUserRepo, FavoritesRepo favoritesRepo) {
+        this.tmdbApi = new TmdbApi(TmdbApiUtils.API_KEY);
+        this.appUserRepo = appUserRepo;
+        this.favoritesRepo = favoritesRepo;
+    }
+
+    public List<MovieDb> getUserFavoriteMovies(UUID id) {
+        final List<MovieDb> favoriteMovies = new ArrayList<>();
+        final List<Favorite> favorites = appUserRepo.getById(id).getFavorites();
+
+        favorites.forEach(f ->
+                favoriteMovies.add(tmdbApi.getMovies().getMovie(f.getId().getMovieId().intValue(), TmdbApiUtils.LANG)));
+
+        return favoriteMovies;
+    }
+
+    @Transactional
+    public Favorite addMovieToFavorites(FavoriteReq favoriteReq) {
+        MovieDb movie = tmdbApi.getMovies().getMovie(favoriteReq.getMovieId().intValue(), TmdbApiUtils.LANG);
+        AppUser appUser = appUserRepo.findByUsername(favoriteReq.getUsername())
+                .orElseThrow(() -> new CineSpringException("User not found"));
+
+
+        FavoriteId favId = new FavoriteId(appUser.getId(), (long) movie.getId());
+        Favorite favorite = new Favorite(
+                favId,
+                appUser
+        );
+
+        if (!appUser.getFavorites().contains(favorite)) {
+            appUser.getFavorites().add(favorite);
+
+            favoritesRepo.save(favorite);
+            appUserRepo.save(appUser);
+
+            return favorite;
+        }
+
+        return null;
+    }
+
+    @Transactional
+    public void removeMovieFromFavorites(FavoriteReq favoriteReq) {
+        MovieDb movie = tmdbApi.getMovies().getMovie(favoriteReq.getMovieId().intValue(), TmdbApiUtils.LANG);
+        AppUser appUser = appUserRepo.findByUsername(favoriteReq.getUsername())
+                .orElseThrow(() -> new CineSpringException("User not found"));
+
+        FavoriteId favId = new FavoriteId(appUser.getId(), (long) movie.getId());
+        Favorite favorite = favoritesRepo.getById(favId);
+
+        if(appUser.getFavorites().contains(favorite)) {
+            appUser.getFavorites().remove(favorite);
+
+            appUserRepo.save(appUser);
+            favoritesRepo.delete(favorite);
+        }
+    }
+}
