@@ -1,7 +1,6 @@
 package hr.ljakovic.cinespring.service;
 
 import hr.ljakovic.cinespring.repo.AppUserRepo;
-import hr.ljakovic.cinespring.repo.FavoritesRepo;
 import hr.ljakovic.cinespring.repo.ToWatchRepo;
 import hr.ljakovic.cinespring.util.TmdbApiUtils;
 import info.movito.themoviedbapi.TmdbApi;
