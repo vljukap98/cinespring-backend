@@ -36,7 +36,10 @@ public class AppUser {
     @ToString.Exclude
     private List<Favorite> favorites;
 
+    @OneToMany(mappedBy = "appUser")
+    @ToString.Exclude
+    private List<ToWatch> toWatchList;
+
     //TODO: create lists for:
     // watched movies --> with optional field 'rating'
-    // watchlist movies
 }
