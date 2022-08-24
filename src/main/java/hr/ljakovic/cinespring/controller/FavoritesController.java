@@ -4,35 +4,34 @@ import hr.ljakovic.cinespring.dto.FavoriteReq;
 import hr.ljakovic.cinespring.model.Favorite;
 import hr.ljakovic.cinespring.service.FavoritesService;
 import info.movito.themoviedbapi.model.MovieDb;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/favorites")
 public class FavoritesController {
 
-    private final FavoritesService favoritesService;
+    @Autowired
+    FavoritesService favoritesService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<MovieDb>> getFavoritesByUserid(@PathVariable UUID id) {
-        return ResponseEntity.ok().body(favoritesService.getUserFavoriteMovies(id));
+    @GetMapping("/{username}")
+    public ResponseEntity<List<MovieDb>> getFavoritesByUsername(@PathVariable String username) {
+        return ResponseEntity.ok().body(favoritesService.getUserFavoriteMovies(username));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Favorite> addMovieToFavorites(@RequestBody FavoriteReq favoriteReq) {
+    public ResponseEntity<Favorite> addMovieToFavorites(@RequestBody FavoriteReq req) {
         return ResponseEntity
                 .created(URI.create("/favorites/add"))
-                .body(favoritesService.addMovieToFavorites(favoriteReq));
+                .body(favoritesService.addMovieToFavorites(req));
     }
 
     @PostMapping("/remove")
-    public void removeMovieToFavorites(@RequestBody FavoriteReq favoriteReq) {
-        favoritesService.removeMovieFromFavorites(favoriteReq);
+    public void removeMovieToFavorites(@RequestBody FavoriteReq req) {
+        favoritesService.removeMovieFromFavorites(req);
     }
 }

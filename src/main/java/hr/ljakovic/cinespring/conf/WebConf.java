@@ -96,7 +96,10 @@ public class WebConf extends WebSecurityConfigurerAdapter {
                 "GET",
                 "POST",
                 "PUT",
-                "DELETE"
+                "DELETE",
+                "HEAD",
+                "OPTIONS",
+                "PATCH"
         ));
 
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();

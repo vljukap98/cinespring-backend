@@ -38,7 +38,7 @@ public class AuthService {
 
         final String jwt = jwtUtil.generateToken(userDetails);
 
-        return new AuthRes(jwt, userDetails.getUsername(), jwtUtil.extractExpiration(jwt).toString(), userDetails.getAuthorities());
+        return new AuthRes(jwt, userDetails.getUsername());
     }
 
     public void logoutUser(String jwt) {

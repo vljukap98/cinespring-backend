@@ -30,9 +30,11 @@ public class FavoritesService {
         this.favoritesRepo = favoritesRepo;
     }
 
-    public List<MovieDb> getUserFavoriteMovies(UUID id) {
+    public List<MovieDb> getUserFavoriteMovies(String username) {
         final List<MovieDb> favoriteMovies = new ArrayList<>();
-        final List<Favorite> favorites = appUserRepo.getById(id).getFavorites();
+        final AppUser appUser =  appUserRepo.findByUsername(username).
+                orElseThrow(() -> new CineSpringException("User not found"));
+        final List<Favorite> favorites = appUser.getFavorites();
 
         favorites.forEach(f ->
                 favoriteMovies.add(tmdbApi.getMovies().getMovie(f.getId().getMovieId().intValue(), TmdbApiUtils.LANG)));
@@ -60,9 +62,9 @@ public class FavoritesService {
             appUserRepo.save(appUser);
 
             return favorite;
+        } else {
+            throw new CineSpringException("Movie already marked as favorite");
         }
-
-        return null;
     }
 
     @Transactional
@@ -79,6 +81,8 @@ public class FavoritesService {
 
             appUserRepo.save(appUser);
             favoritesRepo.delete(favorite);
+        } else {
+            throw new CineSpringException("Movie is not marked as favorite");
         }
     }
 }
