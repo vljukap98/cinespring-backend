@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Role implements GrantedAuthority {
     private UUID id;
     private String authority;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
     List<AppUser> appUsers;
 
