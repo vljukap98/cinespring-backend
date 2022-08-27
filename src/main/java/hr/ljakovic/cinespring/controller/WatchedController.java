@@ -39,4 +39,9 @@ public class WatchedController {
     public ResponseEntity<Watched> modifyWatchedMovieStars(@RequestBody WatchedReq watchedReq) {
         return ResponseEntity.ok().body(watchedService.modifyWatchedMovieStars(watchedReq));
     }
+
+    @GetMapping("/stars")
+    public ResponseEntity<Double> getMovieStars(@RequestBody WatchedReq watchedReq) {
+        return ResponseEntity.ok().body(watchedService.getMovieStars(watchedReq));
+    }
 }
