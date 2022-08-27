@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class WatchlistService {
@@ -79,8 +78,8 @@ public class WatchlistService {
         if(appUser.getToWatchList().contains(toWatch)) {
             appUser.getToWatchList().remove(toWatch);
 
-            toWatchRepo.save(toWatch);
             appUserRepo.save(appUser);
+            toWatchRepo.delete(toWatch);
         } else {
             throw new CineSpringException("Movie not added yet");
         }
