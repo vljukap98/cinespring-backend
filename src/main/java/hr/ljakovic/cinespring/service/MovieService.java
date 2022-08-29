@@ -34,8 +34,6 @@ public class MovieService {
     }
 
     public MovieDb getRandomMovie() {
-        //TODO: check whether the user has already marked the movie as watched
-
         final Random random = new Random();
 
         MovieResultsPage movieResultsPage = tmdbApi
