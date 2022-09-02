@@ -14,4 +14,5 @@ public class AuthRes {
 
     private String jwt;
     private String username;
+    private Long expires;
 }
