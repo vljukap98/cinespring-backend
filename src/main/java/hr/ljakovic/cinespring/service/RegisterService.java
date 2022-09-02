@@ -42,7 +42,7 @@ public class RegisterService {
                 .orElseThrow();
 
         AppUser newAppUser = AppUser.builder()
-                .isActivated(true)
+                .isActivated(true) //set this as false, then when verifying email set it as true
                 .id(UUID.randomUUID())
                 .email(registerReq.getEmail())
                 .username(registerReq.getUsername())
@@ -55,6 +55,12 @@ public class RegisterService {
         userRole.getAppUsers().add(newAppUser);
         roleRepo.save(userRole);
 
+        //TODO: send email to the newly created user
+
         return newAppUser;
+    }
+
+    public void verifyNewUserEmail(UUID token) {
+
     }
 }

@@ -43,12 +43,12 @@ public class WebConf extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                //.antMatchers("/auth/**").permitAll()
-                //.antMatchers("/user/**").permitAll()
-                //.antMatchers("/movie/random/**").hasAuthority("ADMIN") //replace this after everything is implemented
-                //.antMatchers("/movie/popular/**").hasAuthority("USER") //replace this after everything is implemented
-                //.anyRequest().authenticated()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/user/**").permitAll()
+                .antMatchers("/movie/random").permitAll()
+                .antMatchers("/movie/**").hasAuthority("USER") //replace this after everything is implemented
+                .anyRequest().authenticated()
+//                .antMatchers("/**").permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

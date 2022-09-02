@@ -33,9 +33,9 @@ public class JwtReqFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        if(authHeader == null && loginHeader == null && !swaggerRequested(req.getRequestURI())) {
+        /*if(authHeader == null && loginHeader == null && !swaggerRequested(req.getRequestURI())) {
             throw new CineSpringException("Headers missing");
-        }
+        }*/
 
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
@@ -55,9 +55,9 @@ public class JwtReqFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(token);
             }
-        } else {
-            throw new CineSpringException("Token missing!");
-        }
+        } // else {
+//            throw new CineSpringException("Token missing!");
+//        }
 
         filterChain.doFilter(req, res);
     }
