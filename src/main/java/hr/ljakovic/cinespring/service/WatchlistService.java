@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -38,6 +39,8 @@ public class WatchlistService {
         watchlist.forEach(m -> {
             watchlistMovies.add(tmdbApi.getMovies().getMovie(m.getToWatchId().getMovieId().intValue(), TmdbApiUtils.LANG));
         });
+
+        Collections.reverse(watchlistMovies);
 
         return watchlistMovies;
     }
@@ -83,5 +86,18 @@ public class WatchlistService {
         } else {
             throw new CineSpringException("Movie not added yet");
         }
+    }
+
+    public List<Long> getUserWatchlistedMovieIds(String username) {
+        AppUser appUser = appUserRepo.findByUsername(username)
+                .orElseThrow(() -> new CineSpringException("User not found"));
+
+        List<Long> movieIds = new ArrayList<>();
+
+        appUser.getToWatchList().forEach(f -> {
+            movieIds.add(f.getToWatchId().getMovieId());
+        });
+
+        return movieIds;
     }
 }

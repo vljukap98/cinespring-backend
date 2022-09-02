@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -39,6 +40,8 @@ public class WatchedService {
             watchedMovies.add(tmdbApi.getMovies().getMovie(m.getWatchedId().getMovieId().intValue(), TmdbApiUtils.LANG));
         });
 
+        Collections.reverse(watchedMovies);
+
         return watchedMovies;
     }
 
@@ -52,7 +55,7 @@ public class WatchedService {
         Watched newWatched = new Watched(
                 watchedId,
                 appUser,
-                watchedReq.getStars()
+                0D
         );
 
         if(!appUser.getWatchedList().contains(newWatched)) {
@@ -102,14 +105,27 @@ public class WatchedService {
         return watched;
     }
 
-    public Double getMovieStars(WatchedReq watchedReq) {
-        MovieDb movie = tmdbApi.getMovies().getMovie(watchedReq.getMovieId().intValue(), TmdbApiUtils.LANG);
-        AppUser appUser = appUserRepo.findByUsername(watchedReq.getUsername())
+    public Double getMovieStars(Long movieId, String username) {
+        MovieDb movie = tmdbApi.getMovies().getMovie(movieId.intValue(), TmdbApiUtils.LANG);
+        AppUser appUser = appUserRepo.findByUsername(username)
                 .orElseThrow(() -> new CineSpringException("User not found"));
 
         WatchedId watchedId = new WatchedId(appUser.getId(), (long) movie.getId());
         Watched watched = watchedRepo.getById(watchedId);
 
         return watched.getStars();
+    }
+
+    public List<Long> getUserWatchedMovieIds(String username) {
+        AppUser appUser = appUserRepo.findByUsername(username)
+                .orElseThrow(() -> new CineSpringException("User not found"));
+
+        List<Long> movieIds = new ArrayList<>();
+
+        appUser.getWatchedList().forEach(w -> {
+            movieIds.add(w.getWatchedId().getMovieId());
+        });
+
+        return movieIds;
     }
 }

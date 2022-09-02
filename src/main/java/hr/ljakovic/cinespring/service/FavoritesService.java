@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +39,8 @@ public class FavoritesService {
 
         favorites.forEach(f ->
                 favoriteMovies.add(tmdbApi.getMovies().getMovie(f.getId().getMovieId().intValue(), TmdbApiUtils.LANG)));
+
+        Collections.reverse(favoriteMovies);
 
         return favoriteMovies;
     }
@@ -84,5 +87,18 @@ public class FavoritesService {
         } else {
             throw new CineSpringException("Movie is not marked as favorite");
         }
+    }
+
+    public List<Long> getUserFavoriteMovieIds(String username) {
+        AppUser appUser = appUserRepo.findByUsername(username)
+                .orElseThrow(() -> new CineSpringException("User not found"));
+
+        List<Long> movieIds = new ArrayList<>();
+
+        appUser.getFavorites().forEach(f -> {
+            movieIds.add(f.getId().getMovieId());
+        });
+
+        return movieIds;
     }
 }

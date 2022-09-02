@@ -46,7 +46,6 @@ public class WebConf extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/movie/random").permitAll()
-                .antMatchers("/movie/**").hasAuthority("USER") //replace this after everything is implemented
                 .anyRequest().authenticated()
 //                .antMatchers("/**").permitAll()
                 .and()
@@ -82,12 +81,14 @@ public class WebConf extends WebSecurityConfigurerAdapter {
                 "X-Requested-With",
                 "Access-Control-Request-Method",
                 "Access-Control-Allow-Origin",
-                "Access-Control-Request-Headers"
+                "Access-Control-Request-Headers",
+                "Allow"
         ));
         corsConfig.setExposedHeaders(Arrays.asList(
                 "Origin",
                 "Content-Type",
                 "Accept",
+                "Allow",
                 "Authorization",
                 "Access-Control-Allow-Origin",
                 "Access-Control-AllowCredentials"

@@ -23,6 +23,11 @@ public class FavoritesController {
         return ResponseEntity.ok().body(favoritesService.getUserFavoriteMovies(username));
     }
 
+    @GetMapping("/ids/{username}")
+    public ResponseEntity<List<Long>> getFavoriteIdsByUsername(@PathVariable String username) {
+        return ResponseEntity.ok().body(favoritesService.getUserFavoriteMovieIds(username));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Favorite> addMovieToFavorites(@RequestBody FavoriteReq req) {
         return ResponseEntity

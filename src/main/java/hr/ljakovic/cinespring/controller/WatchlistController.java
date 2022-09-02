@@ -23,10 +23,15 @@ public class WatchlistController {
         return ResponseEntity.ok().body(watchlistService.getWatchlistMovies(username));
     }
 
+    @GetMapping("/ids/{username}")
+    public ResponseEntity<List<Long>> getWatchlistedIdsByUsername(@PathVariable String username) {
+        return ResponseEntity.ok().body(watchlistService.getUserWatchlistedMovieIds(username));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<ToWatch> addMovieToWatchlist(@RequestBody ToWatchReq req) {
         return ResponseEntity
-                .created(URI.create("/favorites/add"))
+                .created(URI.create("/watchlist/add"))
                 .body(watchlistService.addMovieToWatchlist(req));
     }
 

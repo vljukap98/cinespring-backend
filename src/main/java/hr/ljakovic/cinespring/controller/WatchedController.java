@@ -23,6 +23,11 @@ public class WatchedController {
         return ResponseEntity.ok().body(watchedService.getWatchedMovies(username));
     }
 
+    @GetMapping("/ids/{username}")
+    public ResponseEntity<List<Long>> getWatchedIdsByUsername(@PathVariable String username) {
+        return ResponseEntity.ok().body(watchedService.getUserWatchedMovieIds(username));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Watched> markMovieAsWatched(@RequestBody WatchedReq watchedReq) {
         return ResponseEntity
@@ -40,8 +45,8 @@ public class WatchedController {
         return ResponseEntity.ok().body(watchedService.modifyWatchedMovieStars(watchedReq));
     }
 
-    @GetMapping("/stars")
-    public ResponseEntity<Double> getMovieStars(@RequestBody WatchedReq watchedReq) {
-        return ResponseEntity.ok().body(watchedService.getMovieStars(watchedReq));
+    @GetMapping("/stars/{movieId}/{username}")
+    public ResponseEntity<Double> getMovieStars(@PathVariable Long movieId, @PathVariable String username) {
+        return ResponseEntity.ok().body(watchedService.getMovieStars(movieId, username));
     }
 }
