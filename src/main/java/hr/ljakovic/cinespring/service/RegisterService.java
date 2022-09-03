@@ -3,6 +3,7 @@ package hr.ljakovic.cinespring.service;
 import hr.ljakovic.cinespring.dto.RegisterReq;
 import hr.ljakovic.cinespring.exception.CineSpringException;
 import hr.ljakovic.cinespring.model.AppUser;
+import hr.ljakovic.cinespring.model.RegToken;
 import hr.ljakovic.cinespring.model.Role;
 import hr.ljakovic.cinespring.repo.AppUserRepo;
 import hr.ljakovic.cinespring.repo.RoleRepo;
@@ -24,6 +25,12 @@ public class RegisterService {
     RoleRepo roleRepo;
 
     @Autowired
+    RegTokenService regTokenService;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -43,7 +50,7 @@ public class RegisterService {
                 .orElseThrow();
 
         AppUser newAppUser = AppUser.builder()
-                .isActivated(true) //set this as false, then when verifying email set it as true
+                .isActivated(false)
                 .id(UUID.randomUUID())
                 .email(registerReq.getEmail())
                 .username(registerReq.getUsername())
@@ -56,12 +63,22 @@ public class RegisterService {
         userRole.getAppUsers().add(newAppUser);
         roleRepo.save(userRole);
 
-        //TODO: send email to the newly created user
+        RegToken regToken = RegToken
+                .builder()
+                .id(UUID.randomUUID())
+                .appUser(newAppUser)
+                .build();
+
+        regTokenService.saveToken(regToken);
+
+        String confirmationLink = "http://localhost:8080/auth/verify?token=" + regToken.getId().toString();
+
+        emailService.send(
+                registerReq.getEmail(),
+                "Verify account email",
+                "Please verify account by visiting: " + confirmationLink
+        );
 
         return newAppUser;
-    }
-
-    public void verifyNewUserEmail(UUID token) {
-
     }
 }
