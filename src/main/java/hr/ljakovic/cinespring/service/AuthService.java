@@ -40,7 +40,4 @@ public class AuthService {
 
         return new AuthRes(jwt, userDetails.getUsername(), jwtUtil.extractExpiration(jwt).getTime());
     }
-
-    public void logoutUser(String jwt) {
-    }
 }

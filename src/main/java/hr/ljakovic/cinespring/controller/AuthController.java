@@ -43,9 +43,4 @@ public class AuthController {
     public void verifyNewAccount(@PathVariable UUID token) {
 
     }
-
-    @PostMapping("/logout")
-    public void logout(@RequestBody String jwt) {
-        authService.logoutUser(jwt);
-    }
 }
