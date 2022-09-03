@@ -29,12 +29,12 @@ public class DbInsertsConf {
 
     @PostConstruct
     public void initializeDB() {
-        insertUserRole(roleRepo);
-        insertAdminRole(roleRepo);
-        insertSuperAdmin(appUserRepo, roleRepo, passwordEncoder);
+        insertUserRole();
+        insertAdminRole();
+        insertSuperAdmin();
     }
 
-    private void insertSuperAdmin(AppUserRepo appUserRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
+    private void insertSuperAdmin() {
         boolean superAdminExists = appUserRepo.findSuperAdmin();
 
         if(!superAdminExists) {
@@ -58,7 +58,7 @@ public class DbInsertsConf {
 
     }
 
-    private void insertAdminRole(RoleRepo roleRepo) {
+    private void insertAdminRole() {
         boolean adminExists = roleRepo
                 .findByAuthority("ADMIN")
                 .isPresent();
@@ -74,7 +74,7 @@ public class DbInsertsConf {
         }
     }
 
-    private void insertUserRole(RoleRepo roleRepo) {
+    private void insertUserRole() {
         boolean userExists = roleRepo
                 .findByAuthority("USER")
                 .isPresent();
