@@ -2,6 +2,7 @@ package hr.ljakovic.cinespring.service;
 
 import hr.ljakovic.cinespring.util.TmdbApiUtils;
 import info.movito.themoviedbapi.TmdbApi;
+import info.movito.themoviedbapi.model.Discover;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,10 @@ public class MovieService {
 
     public MovieResultsPage getTopMovies(Long page) {
         return tmdbApi.getMovies().getTopRatedMovies(TmdbApiUtils.LANG, page.intValue());
+    }
+
+    public MovieResultsPage discoverMovies() {
+        return tmdbApi.getDiscover().getDiscover(new Discover());
     }
 
     public MovieDb getRandomMovie() {

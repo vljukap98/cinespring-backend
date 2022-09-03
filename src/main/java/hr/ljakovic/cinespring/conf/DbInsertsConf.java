@@ -6,10 +6,13 @@ import hr.ljakovic.cinespring.model.Role;
 import hr.ljakovic.cinespring.repo.AppUserRepo;
 import hr.ljakovic.cinespring.repo.RoleRepo;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +21,8 @@ import java.util.UUID;
 public class DbInsertsConf {
 
     @Bean
+    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
     public CommandLineRunner clr(RoleRepo roleRepo, AppUserRepo appUserRepo, PasswordEncoder passwordEncoder) {
         return args -> {
             insertUserRole(roleRepo);

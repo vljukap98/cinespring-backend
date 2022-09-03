@@ -14,9 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Service
 public class RegisterService {
+
+    private final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    private final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
+    private final Pattern USERNAME_PATTERN = Pattern.compile("^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
 
     @Autowired
     AppUserRepo appUserRepo;
@@ -44,6 +49,10 @@ public class RegisterService {
 
         if(emailExists) {
             throw new CineSpringException("Entered email is already in use");
+        }
+
+        if(!checkReqPattern(registerReq)) {
+            throw new CineSpringException("Entered username, email or password aren't allowed");
         }
 
         Role userRole = roleRepo.findByAuthority("USER")
@@ -80,5 +89,12 @@ public class RegisterService {
         );
 
         return newAppUser;
+    }
+
+    private Boolean checkReqPattern(RegisterReq req) {
+
+        return EMAIL_PATTERN.matcher(req.getEmail()).find()
+                && PASSWORD_PATTERN.matcher(req.getPassword()).find()
+                && USERNAME_PATTERN.matcher(req.getUsername()).find();
     }
 }

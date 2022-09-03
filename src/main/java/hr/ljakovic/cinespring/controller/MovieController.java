@@ -51,6 +51,11 @@ public class MovieController {
         return ResponseEntity.ok().body(movieService.getTopMovies(page));
     }
 
+    @GetMapping("/discover")
+    public ResponseEntity<MovieResultsPage> discoverMovies() {
+        return ResponseEntity.ok().body(movieService.discoverMovies());
+    }
+
     @GetMapping("/random")
     public ResponseEntity<MovieDb> getRandomMovie() {
         return ResponseEntity.ok().body(movieService.getRandomMovie());
