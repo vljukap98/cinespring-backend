@@ -1,6 +1,5 @@
 package hr.ljakovic.cinespring.util;
 
-import hr.ljakovic.cinespring.exception.CineSpringException;
 import hr.ljakovic.cinespring.service.CineSpringUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -54,9 +53,5 @@ public class JwtReqFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(req, res);
-    }
-
-    private boolean swaggerRequested(String url) {
-        return url.contains("swagger") || url.contains("api");
     }
 }

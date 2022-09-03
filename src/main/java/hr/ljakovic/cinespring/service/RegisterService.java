@@ -6,7 +6,6 @@ import hr.ljakovic.cinespring.model.AppUser;
 import hr.ljakovic.cinespring.model.Role;
 import hr.ljakovic.cinespring.repo.AppUserRepo;
 import hr.ljakovic.cinespring.repo.RoleRepo;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 public class RegisterService {
 
-    private final AppUserRepo appUserRepo;
-    private final RoleRepo roleRepo;
+    @Autowired
+    AppUserRepo appUserRepo;
+
+    @Autowired
+    RoleRepo roleRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

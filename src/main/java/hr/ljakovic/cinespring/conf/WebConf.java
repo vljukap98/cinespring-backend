@@ -47,7 +47,6 @@ public class WebConf extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/movie/random").permitAll()
                 .anyRequest().authenticated()
-//                .antMatchers("/**").permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
