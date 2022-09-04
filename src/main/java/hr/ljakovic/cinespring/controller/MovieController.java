@@ -1,12 +1,10 @@
 package hr.ljakovic.cinespring.controller;
 
-import hr.ljakovic.cinespring.service.CastService;
-import hr.ljakovic.cinespring.service.CrewService;
+import hr.ljakovic.cinespring.service.GenreService;
 import hr.ljakovic.cinespring.service.MovieService;
+import info.movito.themoviedbapi.model.Genre;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
-import info.movito.themoviedbapi.model.people.PersonCast;
-import info.movito.themoviedbapi.model.people.PersonCrew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +23,7 @@ public class MovieController {
 
     @Autowired
 
-    CastService castService;
-
-    @Autowired
-
-    CrewService crewService;
+    GenreService genreService;
 
     @GetMapping("/{id}")
     public ResponseEntity<MovieDb> getMovieById(@PathVariable Long id) {
@@ -61,13 +55,9 @@ public class MovieController {
         return ResponseEntity.ok().body(movieService.getRandomMovie());
     }
 
-    @GetMapping("/cast/{id}")
-    public ResponseEntity<List<PersonCast>> getCastByMovieId(@PathVariable Long id) {
-        return ResponseEntity.ok().body(castService.getCastByMovieId(id));
-    }
 
-    @GetMapping("/crew/{id}")
-    public ResponseEntity<List<PersonCrew>> getCrewByMovieId(@PathVariable Long id) {
-        return ResponseEntity.ok().body(crewService.getCrewByMovieId(id));
+    @GetMapping("/genre/{id}")
+    public ResponseEntity<List<Genre>> getCrewByMovieId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(genreService.getGenresByMovieId(id));
     }
 }

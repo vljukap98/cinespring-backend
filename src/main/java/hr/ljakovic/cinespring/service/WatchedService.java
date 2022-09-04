@@ -89,6 +89,7 @@ public class WatchedService {
         }
     }
 
+    @Transactional
     public Watched modifyWatchedMovieStars(WatchedReq watchedReq) {
         MovieDb movie = tmdbApi.getMovies().getMovie(watchedReq.getMovieId().intValue(), TmdbApiUtils.LANG);
         AppUser appUser = appUserRepo.findByUsername(watchedReq.getUsername())
@@ -111,7 +112,8 @@ public class WatchedService {
                 .orElseThrow(() -> new CineSpringException("User not found"));
 
         WatchedId watchedId = new WatchedId(appUser.getId(), (long) movie.getId());
-        Watched watched = watchedRepo.getById(watchedId);
+        Watched watched = watchedRepo.findById(watchedId)
+                .orElseThrow(() -> new CineSpringException("Film not marked as watched"));
 
         return watched.getStars();
     }

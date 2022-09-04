@@ -45,7 +45,7 @@ public class MovieService {
                 .getMovies()
                 .getTopRatedMovies(
                         TmdbApiUtils.LANG,
-                        random.nextInt(100)
+                        random.nextInt(50)
                 );
 
         return movieResultsPage.getResults().get(random.nextInt(20));

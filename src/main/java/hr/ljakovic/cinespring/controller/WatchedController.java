@@ -19,7 +19,7 @@ public class WatchedController {
     WatchedService watchedService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<MovieDb>> getWatchlistByUsername(@PathVariable String username) {
+    public ResponseEntity<List<MovieDb>> getWatchedByUsername(@PathVariable String username) {
         return ResponseEntity.ok().body(watchedService.getWatchedMovies(username));
     }
 
