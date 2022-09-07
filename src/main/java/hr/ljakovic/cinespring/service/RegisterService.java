@@ -80,7 +80,7 @@ public class RegisterService {
 
         regTokenService.saveToken(regToken);
 
-        String confirmationLink = "http://localhost:8080/auth/verify?token=" + regToken.getId().toString();
+        String confirmationLink = "https://cinespring-postgresql.herokuapp.com/auth/verify?token=" + regToken.getId().toString();
 
         emailService.send(
                 registerReq.getEmail(),
