@@ -56,7 +56,7 @@ public class RegisterService {
         }
 
         Role userRole = roleRepo.findByAuthority("USER")
-                .orElseThrow();
+                .orElseThrow(() -> new CineSpringException("Role not found"));
 
         AppUser newAppUser = AppUser.builder()
                 .isActivated(false)
