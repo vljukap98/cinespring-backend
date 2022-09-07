@@ -80,7 +80,7 @@ public class WebConf extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfig = new CorsConfiguration();
 
         corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://cinespring-postgresql.herokuapp.com", ""));
+        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://cinespring-angular.herokuapp.com", ""));
         corsConfig.setAllowedHeaders(Arrays.asList(
                 "Origin",
                 "Content-Type",
