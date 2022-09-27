@@ -22,7 +22,7 @@ public class RegTokenService {
     }
 
     @Transactional
-    public void confirmToken(UUID token) {
+    public String confirmToken(UUID token) {
         RegToken confirmedRegToken = regTokenRepo.getById(token);
 
         if(confirmedRegToken.getConfirmed() != null) {
@@ -33,6 +33,8 @@ public class RegTokenService {
         confirmedRegToken.getAppUser().setIsActivated(true);
 
         regTokenRepo.save(confirmedRegToken);
+
+        return "Account email confirmed";
     }
 
     @Transactional

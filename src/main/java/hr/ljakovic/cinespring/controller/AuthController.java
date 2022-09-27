@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     @GetMapping("/verify")
-    public void verifyNewAccount(@RequestParam("token") UUID token) {
-        regTokenService.confirmToken(token);
+    public String verifyNewAccount(@RequestParam("token") UUID token) {
+        return regTokenService.confirmToken(token);
     }
 }
